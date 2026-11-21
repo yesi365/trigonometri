@@ -1,1 +1,2049 @@
-selamat belajar bersama bu YN yang cantik dan imut
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TRIGONOMETRY IN REAL LIFE: MISSION HEIGHT</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    overflow: hidden;
+    background: #0a0e27;
+    color: white;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  /* ===== SLIDE CONTAINER ===== */
+  .deck {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .slide {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: scale(0.95) translateY(20px);
+    overflow: hidden;
+  }
+
+  .slide.active {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1) translateY(0);
+    z-index: 10;
+  }
+
+  .slide.prev {
+    transform: scale(1.05) translateY(-20px);
+  }
+
+  /* ===== BACKGROUNDS ===== */
+  .bg-gradient-1 {
+    background: linear-gradient(135deg, #1a1a3e 0%, #0f0f2e 50%, #1a0a2e 100%);
+  }
+  .bg-gradient-2 {
+    background: radial-gradient(ellipse at top, #2a1a4e 0%, #0a0e27 70%);
+  }
+  .bg-gradient-3 {
+    background: linear-gradient(180deg, #0f1a3e 0%, #1a2a5e 50%, #0a1a3e 100%);
+  }
+
+  /* Animated stars background */
+  .stars {
+    position: absolute;
+    inset: 0;
+    background-image: 
+      radial-gradient(2px 2px at 20px 30px, rgba(255,255,255,0.6), transparent),
+      radial-gradient(2px 2px at 60px 70px, rgba(255,255,255,0.4), transparent),
+      radial-gradient(1px 1px at 50px 50px, rgba(255,255,255,0.8), transparent),
+      radial-gradient(2px 2px at 130px 80px, rgba(255,255,255,0.5), transparent),
+      radial-gradient(1px 1px at 90px 10px, rgba(255,255,255,0.7), transparent);
+    background-size: 200px 100px, 300px 150px, 150px 100px, 250px 200px, 180px 120px;
+    animation: drift 60s linear infinite;
+    opacity: 0.7;
+  }
+  @keyframes drift {
+    from { background-position: 0 0, 0 0, 0 0, 0 0, 0 0; }
+    to { background-position: 400px 200px, -300px 150px, 150px -100px, -250px 200px, 180px -120px; }
+  }
+
+  /* ===== NAVIGATION ===== */
+  .nav {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    z-index: 1000;
+    background: rgba(10, 14, 39, 0.85);
+    backdrop-filter: blur(20px);
+    padding: 12px 25px;
+    border-radius: 50px;
+    border: 1px solid rgba(255,255,255,0.15);
+    box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+  }
+
+  .nav button {
+    background: linear-gradient(135deg, #2a6fdb, #1a4f9c);
+    border: none;
+    color: white;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .nav button:hover:not(:disabled) {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px rgba(42, 111, 219, 0.6);
+  }
+  .nav button:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  .slide-counter {
+    color: #ccc;
+    font-size: 0.9rem;
+    font-family: monospace;
+    min-width: 60px;
+    text-align: center;
+  }
+
+  /* Progress bar */
+  .progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #ffb347, #ff6b6b, #b86bff, #42e6ff);
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1000;
+    box-shadow: 0 0 15px rgba(255, 179, 71, 0.8);
+  }
+
+  /* ===== SLIDE CONTENT LAYOUTS ===== */
+  .slide-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 80px;
+    z-index: 2;
+  }
+
+  .slide-content.split {
+    flex-direction: row;
+    gap: 40px;
+  }
+
+  .slide-content.split .half {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-height: 80vh;
+  }
+
+  /* ===== TYPOGRAPHY ===== */
+  .title {
+    font-size: clamp(2.5rem, 5vw, 5rem);
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: -1px;
+    background: linear-gradient(135deg, #fff 0%, #ffcc33 50%, #ff8c42 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 20px;
+    text-align: center;
+    animation: titleGlow 3s ease-in-out infinite alternate;
+  }
+  @keyframes titleGlow {
+    from { filter: drop-shadow(0 0 20px rgba(255, 204, 51, 0.3)); }
+    to { filter: drop-shadow(0 0 40px rgba(255, 140, 66, 0.6)); }
+  }
+
+  .subtitle {
+    font-size: clamp(1.1rem, 2vw, 1.6rem);
+    color: #b0b8d8;
+    text-align: center;
+    max-width: 800px;
+    line-height: 1.6;
+    margin-bottom: 30px;
+  }
+
+  .section-label {
+    display: inline-block;
+    background: linear-gradient(135deg, rgba(255,140,66,0.2), rgba(255,204,51,0.2));
+    border: 1px solid rgba(255,204,51,0.4);
+    color: #ffcc33;
+    padding: 8px 20px;
+    border-radius: 30px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 25px;
+  }
+
+  .slide-title {
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 800;
+    color: white;
+    margin-bottom: 25px;
+    line-height: 1.2;
+  }
+
+  .slide-title .accent {
+    background: linear-gradient(135deg, #ffcc33, #ff8c42);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .body-text {
+    font-size: clamp(1rem, 1.4vw, 1.25rem);
+    color: #c8d0e8;
+    line-height: 1.7;
+    margin-bottom: 20px;
+    max-width: 700px;
+  }
+
+  .highlight-box {
+    background: rgba(42, 111, 219, 0.15);
+    border-left: 4px solid #2a6fdb;
+    padding: 20px 25px;
+    border-radius: 8px;
+    margin: 20px 0;
+    backdrop-filter: blur(10px);
+  }
+
+  .highlight-box.warning {
+    background: rgba(255, 140, 66, 0.15);
+    border-left-color: #ff8c42;
+  }
+
+  .highlight-box.success {
+    background: rgba(66, 230, 255, 0.15);
+    border-left-color: #42e6ff;
+  }
+
+  .quote {
+    font-style: italic;
+    font-size: clamp(1.2rem, 2vw, 1.8rem);
+    color: #ffcc33;
+    text-align: center;
+    padding: 30px;
+    border-top: 2px solid rgba(255,204,51,0.3);
+    border-bottom: 2px solid rgba(255,204,51,0.3);
+    margin: 30px 0;
+    line-height: 1.5;
+  }
+
+  /* ===== BIG ANIMATED NUMBERS ===== */
+  .big-number {
+    font-size: clamp(4rem, 10vw, 12rem);
+    font-weight: 900;
+    background: linear-gradient(135deg, #ffcc33, #ff6b6b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+    animation: numberPulse 2s ease-in-out infinite;
+  }
+  @keyframes numberPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+
+  /* ===== INTERACTIVE 3D VIEWPORT ===== */
+  .viewport-3d {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: #0a0e27;
+    overflow: hidden;
+  }
+
+  .viewport-3d canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  .viewport-overlay {
+    position: absolute;
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  .viewport-overlay.pointer-auto {
+    pointer-events: auto;
+  }
+
+  /* HUD for 3D scenes */
+  .hud {
+    position: absolute;
+    background: rgba(10, 14, 39, 0.85);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 15px;
+    padding: 18px 22px;
+    color: white;
+    pointer-events: auto;
+    z-index: 10;
+  }
+
+  .hud.top-left { top: 20px; left: 20px; max-width: 320px; }
+  .hud.top-right { top: 20px; right: 20px; min-width: 240px; }
+  .hud.bottom-left { bottom: 120px; left: 20px; }
+  .hud.bottom-right { bottom: 120px; right: 20px; }
+
+  .hud h4 {
+    color: #ffcc33;
+    font-size: 0.85rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+  }
+
+  .stat-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+  }
+  .stat-label { color: #8a94b8; }
+  .stat-value {
+    color: #fff;
+    font-weight: 700;
+    font-family: 'Courier New', monospace;
+    font-size: 0.95rem;
+  }
+  .stat-value.orange { color: #ff8c42; }
+  .stat-value.cyan { color: #42e6ff; }
+  .stat-value.purple { color: #b86bff; }
+  .stat-value.gold { color: #ffcc33; }
+
+  /* ===== BUTTONS ===== */
+  .btn {
+    background: linear-gradient(135deg, #2a6fdb, #1a4f9c);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
+    padding: 12px 28px;
+    border-radius: 40px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.25s;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 15px rgba(42, 111, 219, 0.3);
+    font-family: inherit;
+  }
+  .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(42, 111, 219, 0.5);
+  }
+  .btn:active { transform: translateY(0); }
+
+  .btn-accent {
+    background: linear-gradient(135deg, #ff8c42, #e66a1a);
+    box-shadow: 0 4px 15px rgba(255, 140, 66, 0.4);
+  }
+  .btn-accent:hover { box-shadow: 0 8px 25px rgba(255, 140, 66, 0.6); }
+
+  .btn-gold {
+    background: linear-gradient(135deg, #ffcc33, #e6a800);
+    color: #1a1a2e;
+    box-shadow: 0 4px 15px rgba(255, 204, 51, 0.4);
+  }
+  .btn-gold:hover { box-shadow: 0 8px 25px rgba(255, 204, 51, 0.7); }
+
+  .btn-ghost {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.2);
+    box-shadow: none;
+  }
+  .btn-ghost:hover { background: rgba(255,255,255,0.15); }
+
+  .btn-sm {
+    padding: 8px 18px;
+    font-size: 0.85rem;
+  }
+
+  .btn-row {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 25px;
+  }
+
+  /* ===== OPTION CARDS ===== */
+  .option-card {
+    background: rgba(255,255,255,0.05);
+    border: 2px solid rgba(255,255,255,0.1);
+    border-radius: 15px;
+    padding: 22px 25px;
+    margin: 12px 0;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: left;
+    color: white;
+    font-size: 1rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-family: inherit;
+  }
+  .option-card:hover {
+    background: rgba(42, 111, 219, 0.2);
+    border-color: #2a6fdb;
+    transform: translateX(5px);
+  }
+  .option-card.selected {
+    background: rgba(255, 204, 51, 0.15);
+    border-color: #ffcc33;
+  }
+  .option-card.correct {
+    background: rgba(66, 230, 255, 0.15);
+    border-color: #42e6ff;
+  }
+  .option-card.wrong {
+    background: rgba(255, 107, 107, 0.15);
+    border-color: #ff6b6b;
+  }
+  .option-card .num {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+  .option-card.correct .num { background: #42e6ff; color: #0a0e27; }
+  .option-card.wrong .num { background: #ff6b6b; color: #0a0e27; }
+
+  /* ===== SLIDER ===== */
+  .slider-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: rgba(10, 14, 39, 0.85);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 40px;
+    padding: 12px 22px;
+    margin-top: 15px;
+    pointer-events: auto;
+  }
+  .slider-container label {
+    color: #ffcc33;
+    font-weight: 700;
+    font-size: 1rem;
+    white-space: nowrap;
+  }
+  input[type="range"] {
+    flex: 1;
+    height: 6px;
+    -webkit-appearance: none;
+    background: linear-gradient(90deg, #2a6fdb, #ff8c42);
+    border-radius: 3px;
+    outline: none;
+    min-width: 150px;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #fff;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(255,255,255,0.8);
+    border: 2px solid #ff8c42;
+  }
+  .slider-value {
+    color: #fff;
+    font-weight: 800;
+    font-family: monospace;
+    font-size: 1.15rem;
+    min-width: 55px;
+    text-align: right;
+  }
+
+  /* ===== TABLE ===== */
+  .obs-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+    margin-top: 10px;
+  }
+  .obs-table th {
+    color: #ffcc33;
+    text-align: left;
+    padding: 6px 8px;
+    border-bottom: 1px solid rgba(255,204,51,0.3);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+  }
+  .obs-table td {
+    padding: 6px 8px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    color: #d0d8f0;
+    font-family: monospace;
+  }
+  .obs-table tr:hover td { background: rgba(255,255,255,0.05); }
+
+  /* ===== FLOATING LABELS ===== */
+  .float-label {
+    position: absolute;
+    background: rgba(10, 14, 39, 0.9);
+    border: 1px solid #ffcc33;
+    color: #ffcc33;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    font-family: monospace;
+    pointer-events: none;
+    z-index: 20;
+    white-space: nowrap;
+  }
+
+  /* ===== SCENE TRANSITION EFFECT ===== */
+  .scene-fade {
+    animation: sceneFadeIn 1s ease-out;
+  }
+  @keyframes sceneFadeIn {
+    from { opacity: 0; transform: scale(1.05); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  /* ===== PROGRESS DOTS ===== */
+  .progress-dots {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 8px;
+    z-index: 1000;
+  }
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+  .dot.active {
+    background: #ffcc33;
+    box-shadow: 0 0 10px rgba(255,204,51,0.8);
+    transform: scale(1.3);
+  }
+  .dot.done {
+    background: rgba(66, 230, 255, 0.6);
+  }
+
+  /* ===== LOADING ===== */
+  .loading-overlay {
+    position: absolute;
+    inset: 0;
+    background: #0a0e27;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    transition: opacity 0.5s;
+  }
+  .loading-overlay.hidden { opacity: 0; pointer-events: none; }
+  .loader {
+    width: 60px;
+    height: 60px;
+    border: 3px solid rgba(255,204,51,0.2);
+    border-top-color: #ffcc33;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-text {
+    margin-top: 20px;
+    color: #ffcc33;
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 900px) {
+    .slide-content { padding: 40px 25px; }
+    .slide-content.split { flex-direction: column; }
+    .hud.top-left, .hud.top-right { max-width: 200px; padding: 12px; }
+    .hud.bottom-left, .hud.bottom-right { display: none; }
+    .nav { padding: 8px 15px; gap: 10px; }
+    .nav button { width: 38px; height: 38px; font-size: 1rem; }
+  }
+
+  /* ===== SYMBOL ANIMATION ===== */
+  .math-symbol {
+    display: inline-block;
+    animation: floatSymbol 3s ease-in-out infinite;
+  }
+  @keyframes floatSymbol {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-15px) rotate(5deg); }
+  }
+
+  /* ===== SIDE HIGHLIGHT PULSE ===== */
+  .pulse-glow {
+    animation: pulseGlow 2s ease-in-out infinite;
+  }
+  @keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 0 5px currentColor; }
+    50% { box-shadow: 0 0 25px currentColor; }
+  }
+
+  /* ===== FORMULA STYLE ===== */
+  .formula {
+    font-family: 'Courier New', monospace;
+    font-size: clamp(1.3rem, 2.5vw, 2rem);
+    text-align: center;
+    padding: 25px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 15px;
+    border: 2px solid rgba(255,204,51,0.3);
+    margin: 20px 0;
+    color: #ffcc33;
+    letter-spacing: 1px;
+  }
+  .formula .frac {
+    display: inline-flex;
+    flex-direction: column;
+    vertical-align: middle;
+    text-align: center;
+    margin: 0 8px;
+  }
+  .formula .frac .top {
+    border-bottom: 2px solid currentColor;
+    padding: 0 8px 4px;
+  }
+  .formula .frac .bottom {
+    padding: 4px 8px 0;
+  }
+
+  /* ===== STAGGER ANIMATION ===== */
+  .stagger > * {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: staggerIn 0.6s ease-out forwards;
+  }
+  .stagger > *:nth-child(1) { animation-delay: 0.1s; }
+  .stagger > *:nth-child(2) { animation-delay: 0.25s; }
+  .stagger > *:nth-child(3) { animation-delay: 0.4s; }
+  .stagger > *:nth-child(4) { animation-delay: 0.55s; }
+  .stagger > *:nth-child(5) { animation-delay: 0.7s; }
+  .stagger > *:nth-child(6) { animation-delay: 0.85s; }
+  @keyframes staggerIn {
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<div class="progress-dots" id="progressDots"></div>
+
+<div class="deck" id="deck">
+
+  <!-- ================================================================
+       SLIDE 1: TITLE
+  ================================================================ -->
+  <div class="slide active bg-gradient-1" data-slide="0">
+    <div class="stars"></div>
+    <div class="slide-content stagger">
+      <div style="font-size: 5rem; margin-bottom: 20px;" class="math-symbol">📐</div>
+      <div class="section-label">MATEMATIKA KELAS X • TRIGONOMETRI</div>
+      <h1 class="title">TRIGONOMETRY<br>IN REAL LIFE</h1>
+      <div style="font-size: clamp(1.5rem, 3vw, 2.5rem); font-weight: 800; color: #ffcc33; letter-spacing: 8px; margin: 10px 0 25px;">MISSION HEIGHT</div>
+      <p class="subtitle">
+        Bisakah kamu mengukur tinggi objek<br>
+        <strong style="color:#ff8c42;">tanpa mengukurnya secara langsung?</strong>
+      </p>
+      <div class="btn-row" style="margin-top: 40px;">
+        <button class="btn btn-gold" style="font-size: 1.2rem; padding: 18px 50px;" onclick="goToSlide(1)">
+          🚀 START MISSION
+        </button>
+      </div>
+      <p style="color:#5a6488; font-size:0.85rem; margin-top:30px; letter-spacing:2px;">
+        INTERACTIVE 3D LEARNING EXPERIENCE
+      </p>
+    </div>
+  </div>
+
+  <!-- ================================================================
+       SLIDE 2: THE MISSION (Story)
+  ================================================================ -->
+  <div class="slide bg-gradient-2" data-slide="1">
+    <div class="stars"></div>
+    <div class="slide-content">
+      <div class="section-label">SCENE 1 — THE MISSION</div>
+      <h2 class="slide-title">Tim Sekolah Membutuhkan <span class="accent">Bantuanmu!</span></h2>
+      <div class="quote">
+        "Tim sekolah ingin mengetahui tinggi gedung tanpa harus memanjat<br>
+        atau mengukur langsung dari bawah hingga puncak."
+      </div>
+      <p class="body-text" style="text-align:center; max-width:750px;">
+        Kamu ditantang menemukan cara mengukur tinggi gedung hanya dengan memanfaatkan
+        <span style="color:#42e6ff; font-weight:700;">jarak</span> dan
+        <span style="color:#ff8c42; font-weight:700;">sudut pengamatan</span>.
+      </p>
+      <div class="highlight-box warning" style="max-width:700px;">
+        <strong style="color:#ff8c42;">🎯 MISI:</strong> Temukan tinggi gedung sekolah menggunakan alat pengukur sudut (clinometer) dan meteran virtual. Selidiki hubungan antara sudut, jarak, dan tinggi!
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-accent" onclick="goToSlide(2)">🔍 MULAI EKSPLORASI</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================================
+       SLIDE 3: EXPLORE THE ENVIRONMENT (3D Scene with choices)
+  ================================================================ -->
+  <div class="slide bg-gradient-3" data-slide="2" id="slide-explore">
+    <div class="viewport-3d" id="viewport-explore"></div>
+    
+    <div class="hud top-left">
+      <h4>🏫 LINGKUNGAN SEKOLAH</h4>
+      <p style="color:#c8d0e8; font-size:0.9rem; line-height:1.5; margin-bottom:10px;">
+        Jelajahi lingkungan 3D. Putar kamera, zoom, dan pilih objek untuk diukur.
+      </p>
+      <p style="color:#8a94b8; font-size:0.8rem;">
+        🖱️ Drag = putar kamera<br>
+        🔍 Scroll = zoom
+      </p>
+    </div>
+
+    <div class="hud top-right">
+      <h4>❓ PERTANYAAN</h4>
+      <p style="color:#c8d0e8; font-size:0.9rem; line-height:1.5;">
+        Bagaimana cara menentukan tinggi gedung ini tanpa mengukur secara langsung?
+      </p>
+    </div>
+
+    <div class="hud bottom-left" style="max-width:380px;">
+      <h4>PILIH TINDAKANMU</h4>
+      <button class="option-card" data-choice="1">
+        <span class="num">1</span>
+        <span>Mengukur menggunakan meteran dari tanah sampai puncak</span>
+      </button>
+      <button class="option-card" data-choice="2">
+        <span class="num">2</span>
+        <span>Menggunakan jarak dari gedung dan sudut elevasi</span>
+      </button>
+      <button class="option-card" data-choice="3">
+        <span class="num">3</span>
+        <span>Memperkirakan tinggi hanya dengan melihat</span>
+      </button>
+    </div>
+
+    <div class="hud bottom-right" id="explore-feedback" style="display:none;">
+      <h4>💡 FEEDBACK</h4>
+      <p id="explore-feedback-text" style="color:#c8d0e8; font-size:0.9rem; line-height:1.5;"></p>
+    </div>
+  </div>
+
+  <!-- ================================================================
+       SLIDE 4: SET UP MEASUREMENT (Interactive 3D)
+  ================================================================ -->
+  <div class="slide bg-gradient-3" data-slide="3" id="slide-setup">
+    <div class="viewport-3d" id="viewport-setup"></div>
+
+    <div class="hud top-left">
+      <h4>🎯 PENGATURAN PENGUKURAN</h4>
+      <p style="color:#c8d0e8; font-size:0.85rem; line-height:1.5;">
+        Seret karakter pengamat untuk mengubah jarak.<br>
+        Atur sudut elevasi dengan slider di bawah.
+      </p>
+    </div>
+
+    <div class="hud top-right">
+      <h4>📊 DATA DIKETAHUI</h4>
+      <div class="stat-row"><span class="stat-label">Jarak horizontal</span><span class="stat-value cyan" id="s3-dist">15.0 m</span></div>
+      <div class="stat-row"><span class="stat-label">Sudut elevasi (θ)</span><span class="stat-value gold" id="s3-angle">30.0°</span></div>
+      <div class="stat-row"><span class="stat-label">Tinggi mata</span><span class="stat-value">1.5 m</span></div>
+    </div>
+
+    <div class="viewport-overlay pointer-auto" style="bottom: 30px; left: 50%; transform: translateX(-50%); width: min(500px, 90%);">
+      <div class="slider-container">
+        <label>θ ELEVASI</label>
+        <input type="range" id="s3-slider" min="5" max="85" value="30" step="1">
+        <span class="slider-value" id="s3-slider-val">30°</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================================
+       SLIDE 5: DISCOVER THE TRIANGLE (3D with triangle overlay)
+  ================================================================ -->
+  <div class="slide bg-gradient-3" data-slide="4" id="slide-triangle">
+    <div class="viewport-3d" id="viewport-triangle"></div>
+
+    <div class="hud top-left">
+      <h4>🔺 SEGITIGA SIKU-SIKU</h4>
+      <p style="color:#c8d0e8; font-size:0.85rem; line-height:1.5;">
+        Segitiga terbentuk dari posisi pengamat, dasar gedung, dan puncak gedung.
+      </p>
+      <div style="margin-top:12px; font-size:0.85rem;">
+        <div style="color:#42e6ff; margin-bottom:4px;">▬ Sisi Samping (horizontal)</div>
+        <div style="color:#ff8c42; margin-bottom:4px;">▬ Sisi Depan (vertikal)</div>
+        <div style="color:#b86bff;">▬ Sisi Miring (garis pandang)</div>
+      </div>
+    </div>
+
+    <div class="hud top-right">
+      <h4>📐 UKURAN SEGITIGA</h4>
+      <div class="stat-row"><span class="stat-label">Sudut θ</span><span class="stat-value gold" id="s4-angle">30.0°</span></div>
+      <div class="stat-row"><span class="stat-label">Sisi samping (adjacent)</span><span class="stat-value cyan" id="s4-adj">13.0 m</span></div>
+      <div class="stat-row"><span class="stat-label">Sisi depan (opposite)</span><span class="stat-value orange" id="s4-opp">7.5 m</span></div>
+      <div class="stat-row"><span class="stat-label">Sisi miring (hypotenuse)</span><span class="stat-value purple" id="s4-hyp">15.0 m</span></div>
+    </div>
+
+    <div class="viewport-overlay pointer-auto" style="bottom: 30px; left: 50%; transform: translateX(-50%); width: min(500px, 90%);">
+      <div class="slider-container">
+        <label>θ ELEVASI</label>
+        <input type="range" id="s4-slider" min="5" max="85" value="30" step="1">
+        <span class="slider-value" id="s4-slider-val">30°</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================================
+       SLIDE 6: INVESTIGATE THE SIDES
+  ================================================================ -->
+  <div class="slide bg-gradient-1" data-slide="5">
+    <div class="stars"></div>
+    <div class="slide-content">
+      <div class="section-label">SCENE 5 — INVESTIGATE THE SIDES</div>
+      <h2 class="slide-title">Kenali Sisi-Sisi Segitiga</h2>
+      <p class="body-text" style="text-align:center;">
+        Setiap sisi memiliki nama khusus berdasarkan posisinya terhadap sudut θ.
+      </p>
+
+      <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:25px; max-width:1100px; width:100%; margin-top:30px;">
+        <div class="option-card" style="flex-direction:column; text-align:center; border-color:#ff8c42; cursor:default;">
+          <div style="font-size:3rem; margin-bottom:10px;">📏</div>
+          <div style="color:#ff8c42; font-size:1.3rem; font-weight:800; margin-bottom:8px;">SISI DEPAN</div>
+          <div style="font-size:0.85rem; color:#c8d0e8;">(opposite)</div>
+          <p style="font-size:0.85rem; color:#8a94b8; margin-top:10px; line-height:1.5;">
+            Sisi yang berada tepat di hadapan sudut θ
+          </p>
+        </div>
+
+        <div class="option-card" style="flex-direction:column; text-align:center; border-color:#42e6ff; cursor:default;">
+          <div style="font-size:3rem; margin-bottom:10px;">📐</div>
+          <div style="color:#42e6ff; font-size:1.3rem; font-weight:800; margin-bottom:8px;">SISI SAMPING</div>
+          <div style="font-size:0.85rem; color:#c8d0e8;">(adjacent)</div>
+          <p style="font-size:0.85rem; color:#8a94b8; margin-top:10px; line-height:1.5;">
+            Sisi yang berdekatan dengan sudut θ, bukan sisi miring
+          </p>
+        </div>
+
+        <div class="option-card" style="flex-direction:column; text-align:center; border-color:#b86bff; cursor:default;">
+          <div style="font-size:3rem; margin-bottom:10px;">〰️</div>
+          <div style="color:#b86bff; font-size:1.3rem; font-weight:800; margin-bottom:8px;">SISI MIRING</div>
+          <div style="font-size:0.85rem; color:#c8d0e8;">(hypotenuse)</div>
+          <p style="font-size:0.85rem; color:#8a94b8; margin-top:10px; line-height:1.5;">
+            Sisi terpanjang, berhadapan dengan sudut 90°
+          </p>
+        </div>
+      </div>
+
+      <div class="highlight-box success" style="max-width:800px; margin-top:30px; text-align:center;">
+        <strong style="color:#42e6ff;">💡 INGAT:</strong> Nama sisi bergantung pada <strong>sudut mana yang sedang diperhatikan</strong>!
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================================
+       SLIDE 7: EXPERIMENT WITH ANGLES (Interactive + Table)
+  ================================================================ -->
+  <div class="slide bg-gradient-3" data-slide="6" id="slide-experiment">
+    <div class="viewport-3d" id="viewport-experiment"></div>
+
+    <div class="hud top-left">
+      <h4>🧪 LAB EKSPERIMEN SUDUT</h4>
+      <p style="color:#c8d0e8; font-size:0.85rem; line-height:1.5;">
+        Ubah sudut dan amati perubahan panjang sisi. Simpan pengamatanmu!
+      </p>
+      <div class="btn-row" style="margin-top:12px; gap:8px;">
+        <button class="btn btn-ghost btn-sm" onclick="setExperimentAngle(30)">30°</button>
+        <button class="btn btn-ghost btn-sm" onclick="setExperimentAngle(45)">45°</button>
+        <button class="btn btn-ghost btn-sm" onclick="setExperimentAngle(60)">60°</button>
+      </div>
+    </div>
+
+    <div class="hud top-right">
+      <h4>📊 DATA REAL-TIME</h4>
+      <div class="stat-row"><span class="stat-label">Sudut θ</span><span class="stat-value gold" id="s6-angle">30.0°</span></div>
+      <div class="stat-row"><span class="stat-label">Sisi depan</span><span class="stat-value orange" id="s6-opp">-</span></div>
+      <div class="stat-row"><span class="stat-label">Sisi samping</span><span class="stat-value cyan" id="s6-adj">-</span></div>
+      <div class="stat-row"><span class="stat-label">Sisi miring</span><span class="stat-value purple" id="s6-hyp">-</span></div>
+      <hr style="border-color:rgba(255,255,255,0.1); margin:10px 0;">
+      <div class="stat-row"><span class="stat-label">sin θ</span><span class="stat-value" id="s6-sin">-</span></div>
+      <div class="stat-row"><span class="stat-label">cos θ</span><span class="stat-value" id="s6-cos">-</span></div>
+      <div class="stat-row"><span class="stat-label">tan θ</span><span class="stat-value" id="s6-tan">-</span></div>
+    </div>
+
+    <div class="hud bottom-right" style="max-width:420px; max-height:200px; overflow-y:auto;">
+      <h4>📋 TABEL PENGAMATAN</h4>
+      <table class="obs-table" id="s6-table">
+        <thead><tr><th>θ</th><th>Depan</th><th>Samping</th><th>Miring</th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <button class="btn btn-gold btn-sm" style="margin-top:12px; width:100%;" onclick="saveObservation()">💾 SIMPAN PENGAMATAN</button>
+    </div>
+
+    <div class="viewport-overlay pointer-auto" style="bottom: 30px; left: 50%; transform: translateX(-50%); width: min(500px, 90%);">
+      <div class="slider-container">
+        <label>θ</label>
+        <input type="range" id="s6-slider" min="5" max="85" value="30" step="1">
+        <span class="slider-value" id="s6-slider-val">30°</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================================
+       SLIDE 8: DISCOVER TRIGONOMETRIC RATIOS
+  ================================================================ -->
+  <div class="slide bg-gradient-1" data-slide="7" id="slide-ratios">
+    <div class="stars"></div>
+    <div class="slide-content">
+      <div class="section-label">SCENE 7 — DISCOVER THE RELATIONSHIP</div>
+      <h2 class="slide-title">Temukan Perbandingan <span class="accent">Trigonometri!</span></h2>
+      <p class="body-text" style="text-align:center;">
+        Pilih salah satu perbandingan untuk melihat sisi mana yang dibandingkan.
+      </p>
+
+      <div class="btn-row" style="margin: 30px 0;">
+        <button class="btn btn-accent" onclick="showRatio('sin')" id="btn-ratio-sin">SIN θ</button>
+        <button class="btn btn-ghost" onclick="showRatio('cos')" id="btn-ratio-cos">COS θ</button>
+        <button class="btn btn-ghost" onclick="showRatio('tan')" id="btn-ratio-tan">TAN θ</button>
+      </div>
+
+      <div id="ratio-display" style="width:100%; max-width:800px; text-align:center;">
+        <div class="highlight-box" style="text-align:center; padding:35px;">
+          <div id="ratio-sides-text" style="color:#c8d0e8; font-size:1.1rem; margin-bottom:20px;">
+            Klik salah satu tombol di atas untuk memulai...
+          </div>
+          <div class="formula" id="ratio-formula" style="display:none;"></div>
+          <div id="ratio-value" style="font-size:1.5rem; color:#ffcc33; font-weight:800; margin-top:15px;"></div>
+        </div>
+      </div>
+
+      <div class="formula" id="full-formulas" style="margin-top:25px; display:none; font-size:1.1rem;">
+        <div style="margin-bottom:12px;">sin θ = <span class="frac"><span class="top" style="color:#ff8c42;">sisi depan</span><span class="bottom" style="color:#b86bff;">sisi miring</span></span></div>
+        <div style="margin-bottom:12px;">cos θ = <span class="frac"><span class="top" style="color:#42e6ff;">sisi samping</span><span class="bottom" style="color:#b86bff;">sisi miring</span></span></div>
+        <div>tan θ = <span class="frac"><span class="top" style="color:#ff8c42;">sisi depan</span><span class="bottom" style="color:#42e6ff;">sisi samping</span></span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================================
+       SLIDE 9: SCALE THE TRIANGLE
+  ================================================================ -->
+  <div class="slide bg-gradient-2" data-slide="8">
+    <div class="stars"></div>
+    <div class="slide-content">
+      <div class="section-label">SCENE 8 — SCALE THE TRIANGLE</div>
+      <h2 class="slide-title">Ukuran Berubah, Perbandingan <span class="accent">Tetap!</span></h2>
+
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:40px; max-width:1000px; width:100%; margin-top:20px;">
+        <!-- Small triangle -->
+        <div class="highlight-box" style="border-left-color:#42e6ff; text-align:center; padding:30px;">
+          <div style="color:#42e6ff; font-size:1.2rem; font-weight:800; margin-bottom:15px;">SEGITIGA KECIL</div>
+          <div style="font-size:0.9rem; color:#8a94b8; margin-bottom:15px;">θ = 30°</div>
+          <svg viewBox="0 0 200 150" style="width:100%; height:120px;">
+            <polygon points="20,130 180,130 180,50" fill="rgba(66,230,255,0.1)" stroke="#42e6ff" stroke-width="2"/>
+            <text x="100" y="145" fill="#42e6ff" font-size="11" text-anchor="middle">samping</text>
+            <text x="185" y="95" fill="#ff8c42" font-size="11" text-anchor="start">depan</text>
+            <text x="90" y="80" fill="#b86bff" font-size="11" text-anchor="middle">miring</text>
+            <text x="40" y="125" fill="#ffcc33" font-size="12" font-weight="bold">30°</text>
+          </svg>
+          <div style="margin-top:15px; font-family:monospace; font-size:0.85rem; color:#c8d0e8;">
+            <div>sin 30° = <span style="color:#ffcc33;">0.5000</span></div>
+            <div>cos 30° = <span style="color:#ffcc33;">0.8660</span></div>
+            <div>tan 30° = <span style="color:#ffcc33;">0.5774</span></div>
+          </div>
+        </div>
+
+        <!-- Large triangle -->
+        <div class="highlight-box" style="border-left-color:#ff8c42; text-align:center; padding:30px;">
+          <div style="color:#ff8c42; font-size:1.2rem; font-weight:800; margin-bottom:15px;">SEGITIGA BESAR</div>
+          <div style="font-size:0.9rem; color:#8a94b8; margin-bottom:15px;">θ = 30° (2× ukuran)</div>
+          <svg viewBox="0 0 200 150" style="width:100%; height:120px;">
+            <polygon points="10,140 190,140 190,20" fill="rgba(255,140,66,0.1)" stroke="#ff8c42" stroke-width="2"/>
+            <text x="100" y="155" fill="#42e6ff" font-size="11" text-anchor="middle">samping</text>
+            <text x="193" y="85" fill="#ff8c42" font-size="11" text-anchor="start">depan</text>
+            <text x="95" y="70" fill="#b86bff" font-size="11" text-anchor="middle">miring</text>
+            <text x="30" y="135" fill="#ffcc33" font-size="12" font-weight="bold">30°</text>
+          </svg>
+          <div style="margin-top:15px; font-family:monospace; font-size:0.85rem; color:#c8d0e8;">
+            <div>sin 30° = <span style="color:#ffcc33;">0.5000</span></div>
+            <div>cos 30° = <span style="color:#ffcc33;">0.8660</span></div>
+            <div>tan 30° = <span style="color:#ffcc33;">0.5774</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="highlight-box success" style="max-width:800px; margin-top:30px; text-align:center;">
+        <strong style="color:#ffcc33;">🔑 KESIMPULAN:</strong> Jika sudut tetap, memperbesar/memperkecil segitiga <strong>tidak mengubah</strong> nilai sin, cos, dan tan!
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================================
+       SLIDE 10: CHALLENGE
+  ================================================================ -->
+  <div class="slide bg-gradient-3" data-slide="9" id="slide-challenge">
+    <div class="slide-content">
+      <div class="section-label">SCENE 9 — CHALLENGE</div>
+      <h2 class="slide-title">Misi Akhir: <span class="accent">Ukur Tinggi Gedung!</span></h2>
+      <p class="body-text" style="text-align:center;">
+        Gunakan semua yang telah kamu pelajari. Hitung tinggi gedung sekolah!
+      </p>
+
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:30px; max-width:1000px; width:100%; margin-top:25px;">
+        <div class="highlight-box">
+          <h3 style="color:#42e6ff; margin-bottom:15px; font-size:1.1rem;">📋 DATA PENGUKURAN</h3>
+          <div class="stat-row"><span class="stat-label">Jarak pengamat</span><span class="stat-value cyan" id="challenge-distance">20.0 m</span></div>
+          <div class="stat-row"><span class="stat-label">Sudut elevasi</span><span class="stat-value gold" id="challenge-angle">35.0°</span></div>
+          <div class="stat-row"><span class="stat-label">Tinggi mata</span><span class="stat-value">1.5 m</span></div>
+          <hr style="border-color:rgba(255,255,255,0.1); margin:12px 0;">
+          <p style="font-size:0.85rem; color:#8a94b8; line-height:1.5;">
+            💡 <strong>Petunjuk:</strong> Gunakan tan θ untuk mencari sisi depan (tinggi gedung dari mata pengamat). Jangan lupa tambahkan tinggi mata!
+          </p>
+        </div>
+
+        <div class="highlight-box" style="border-left-color:#ffcc33;">
+          <h3 style="color:#ffcc33; margin-bottom:15px; font-size:1.1rem;">✏️ JAWABANMU</h3>
+          <p style="font-size:0.9rem; color:#c8d0e8; margin-bottom:10px;">Berapa tinggi total gedung?</p>
+          <input type="number" id="challenge-answer" placeholder="Tinggi (meter)" step="0.1" style="width:100%; padding:15px; border-radius:10px; border:2px solid rgba(255,204,51,0.4); background:rgba(0,0,0,0.3); color:white; font-size:1.1rem; font-family:monospace; margin-bottom:15px;">
+          <button class="btn btn-gold" style="width:100%;" onclick="checkChallenge()">✅ PERIKSA JAWABAN</button>
+          <div id="challenge-feedback" style="margin-top:15px; font-size:0.9rem; line-height:1.5;"></div>
+        </div>
+      </div>
+
+      <div class="btn-row" style="margin-top:20px;">
+        <button class="btn btn-ghost btn-sm" onclick="showChallengeHint()">💡 LIHAT PETUNJUK</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================================
+       SLIDE 11: REFLECTION
+  ================================================================ -->
+  <div class="slide bg-gradient-1" data-slide="10">
+    <div class="stars"></div>
+    <div class="slide-content">
+      <div class="section-label">SCENE 10 — REFLECTION</div>
+      <h2 class="slide-title">Refleksi Pembelajaran</h2>
+      <p class="body-text" style="text-align:center;">
+        Tuliskan pemahamanmu setelah menyelesaikan misi ini.
+      </p>
+
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px; max-width:1100px; width:100%; margin-top:25px;">
+        <div class="highlight-box">
+          <p style="color:#ffcc33; font-weight:700; margin-bottom:10px;">1. Hubungan sudut & panjang sisi?</p>
+          <textarea placeholder="Tulis jawabanmu..." style="width:100%; height:70px; background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.2); border-radius:8px; padding:10px; color:white; font-family:inherit; resize:none;"></textarea>
+        </div>
+        <div class="highlight-box">
+          <p style="color:#ffcc33; font-weight:700; margin-bottom:10px;">2. Cara memilih perbandingan trigonometri?</p>
+          <textarea placeholder="Tulis jawabanmu..." style="width:100%; height:70px; background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.2); border-radius:8px; padding:10px; color:white; font-family:inherit; resize:none;"></textarea>
+        </div>
+        <div class="highlight-box">
+          <p style="color:#ffcc33; font-weight:700; margin-bottom:10px;">3. Mengapa trigonometri berguna untuk objek tinggi?</p>
+          <textarea placeholder="Tulis jawabanmu..." style="width:100%; height:70px; background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.2); border-radius:8px; padding:10px; color:white; font-family:inherit; resize:none;"></textarea>
+        </div>
+        <div class="highlight-box">
+          <p style="color:#ffcc33; font-weight:700; margin-bottom:10px;">4. Contoh penggunaan trigonometri di kehidupan sehari-hari?</p>
+          <textarea placeholder="Tulis jawabanmu..." style="width:100%; height:70px; background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.2); border-radius:8px; padding:10px; color:white; font-family:inherit; resize:none;"></textarea>
+        </div>
+      </div>
+
+      <div class="btn-row" style="margin-top:25px;">
+        <button class="btn btn-gold" onclick="finishMission()">🎉 SELESAIKAN MISI</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================================
+       SLIDE 12: CONGRATULATIONS
+  ================================================================ -->
+  <div class="slide bg-gradient-2" data-slide="11">
+    <div class="stars"></div>
+    <div class="slide-content stagger">
+      <div style="font-size: 6rem; margin-bottom: 20px;">🏆</div>
+      <h2 class="slide-title" style="text-align:center;">Misi <span class="accent">Berhasil!</span></h2>
+      <div class="quote" style="max-width:700px;">
+        "Kamu telah menemukan sendiri konsep perbandingan trigonometri<br>
+        melalui eksplorasi dan pengamatan langsung!"
+      </div>
+      <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:25px; max-width:900px; width:100%; margin-top:30px;">
+        <div class="highlight-box" style="text-align:center; border-left-color:#ff8c42;">
+          <div style="font-size:2rem; margin-bottom:8px;">📏</div>
+          <div style="color:#ff8c42; font-weight:800; font-size:1.1rem;">sin θ</div>
+          <div style="font-size:0.8rem; color:#8a94b8; margin-top:5px;">depan / miring</div>
+        </div>
+        <div class="highlight-box" style="text-align:center; border-left-color:#42e6ff;">
+          <div style="font-size:2rem; margin-bottom:8px;">📐</div>
+          <div style="color:#42e6ff; font-weight:800; font-size:1.1rem;">cos θ</div>
+          <div style="font-size:0.8rem; color:#8a94b8; margin-top:5px;">samping / miring</div>
+        </div>
+        <div class="highlight-box" style="text-align:center; border-left-color:#b86bff;">
+          <div style="font-size:2rem; margin-bottom:8px;">〰️</div>
+          <div style="color:#b86bff; font-weight:800; font-size:1.1rem;">tan θ</div>
+          <div style="font-size:0.8rem; color:#8a94b8; margin-top:5px;">depan / samping</div>
+        </div>
+      </div>
+      <div class="btn-row" style="margin-top:40px;">
+        <button class="btn btn-gold" onclick="goToSlide(0)">🔄 ULANGI PETUALANGAN</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===== NAVIGATION ===== -->
+<div class="nav">
+  <button id="prevBtn" onclick="prevSlide()" disabled>◀</button>
+  <span class="slide-counter"><span id="currentSlide">1</span> / <span id="totalSlides">12</span></span>
+  <button id="nextBtn" onclick="nextSlide()">▶</button>
+</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.128.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.128.0/examples/jsm/"
+  }
+}
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
+
+// ============================================================
+// SLIDE NAVIGATION
+// ============================================================
+let currentSlideIndex = 0;
+const totalSlides = 12;
+const slides = document.querySelectorAll('.slide');
+
+function updateNav() {
+  document.getElementById('currentSlide').textContent = currentSlideIndex + 1;
+  document.getElementById('prevBtn').disabled = currentSlideIndex === 0;
+  document.getElementById('nextBtn').disabled = currentSlideIndex === totalSlides - 1;
+  document.getElementById('progressBar').style.width = ((currentSlideIndex + 1) / totalSlides * 100) + '%';
+  
+  // Update dots
+  document.querySelectorAll('.dot').forEach((d, i) => {
+    d.classList.toggle('active', i === currentSlideIndex);
+    d.classList.toggle('done', i < currentSlideIndex);
+  });
+}
+
+function goToSlide(index) {
+  if (index < 0 || index >= totalSlides) return;
+  slides.forEach((s, i) => {
+    s.classList.remove('active', 'prev');
+    if (i === index) s.classList.add('active');
+    else if (i < index) s.classList.add('prev');
+  });
+  currentSlideIndex = index;
+  updateNav();
+  onSlideChange(index);
+}
+
+function nextSlide() { if (currentSlideIndex < totalSlides - 1) goToSlide(currentSlideIndex + 1); }
+function prevSlide() { if (currentSlideIndex > 0) goToSlide(currentSlideIndex - 1); }
+
+// Create progress dots
+const dotsContainer = document.getElementById('progressDots');
+for (let i = 0; i < totalSlides; i++) {
+  const dot = document.createElement('div');
+  dot.className = 'dot';
+  dot.onclick = () => goToSlide(i);
+  dotsContainer.appendChild(dot);
+}
+document.getElementById('totalSlides').textContent = totalSlides;
+updateNav();
+
+// Keyboard navigation
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+  if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+});
+
+// ============================================================
+// THREE.JS SCENE MANAGER
+// ============================================================
+const scenes = {};
+
+function createScene(containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return null;
+  
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x0a0e27);
+  scene.fog = new THREE.Fog(0x0a0e27, 50, 150);
+
+  const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+  camera.position.set(25, 18, 35);
+  camera.lookAt(0, 6, 0);
+
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setSize(container.clientWidth, container.clientHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.2;
+  container.appendChild(renderer.domElement);
+
+  const labelRenderer = new CSS2DRenderer();
+  labelRenderer.setSize(container.clientWidth, container.clientHeight);
+  labelRenderer.domElement.style.position = 'absolute';
+  labelRenderer.domElement.style.top = '0';
+  labelRenderer.domElement.style.left = '0';
+  labelRenderer.domElement.style.pointerEvents = 'none';
+  container.appendChild(labelRenderer.domElement);
+
+  const controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+  controls.dampingFactor = 0.05;
+  controls.target.set(0, 6, 0);
+  controls.maxPolarAngle = Math.PI / 2.1;
+  controls.minDistance = 8;
+  controls.maxDistance = 70;
+
+  // Lighting
+  const ambient = new THREE.AmbientLight(0x506090, 0.6);
+  scene.add(ambient);
+
+  const hemi = new THREE.HemisphereLight(0x88aaff, 0x2a3a2a, 0.8);
+  scene.add(hemi);
+
+  const sun = new THREE.DirectionalLight(0xfff5e6, 1.3);
+  sun.position.set(25, 40, 20);
+  sun.castShadow = true;
+  sun.shadow.mapSize.width = 1024;
+  sun.shadow.mapSize.height = 1024;
+  sun.shadow.camera.near = 0.5;
+  sun.shadow.camera.far = 150;
+  sun.shadow.camera.left = -50;
+  sun.shadow.camera.right = 50;
+  sun.shadow.camera.top = 50;
+  sun.shadow.camera.bottom = -50;
+  scene.add(sun);
+
+  const fill = new THREE.DirectionalLight(0x6688cc, 0.4);
+  fill.position.set(-20, 15, -20);
+  scene.add(fill);
+
+  // Build environment
+  buildEnvironment(scene);
+
+  return { scene, camera, renderer, controls, labelRenderer };
+}
+
+function buildEnvironment(scene) {
+  // Ground
+  const ground = new THREE.Mesh(
+    new THREE.CircleGeometry(55, 64),
+    new THREE.MeshStandardMaterial({ color: 0x2a4a3a, roughness: 0.9 })
+  );
+  ground.rotation.x = -Math.PI / 2;
+  ground.receiveShadow = true;
+  scene.add(ground);
+
+  // Grid helper for depth
+  const grid = new THREE.GridHelper(60, 30, 0x3a4a6a, 0x2a3a5a);
+  grid.position.y = 0.02;
+  scene.add(grid);
+
+  // Path
+  const path = new THREE.Mesh(
+    new THREE.PlaneGeometry(7, 45),
+    new THREE.MeshStandardMaterial({ color: 0x6a6a7a, roughness: 0.95 })
+  );
+  path.rotation.x = -Math.PI / 2;
+  path.position.set(0, 0.03, 15);
+  path.receiveShadow = true;
+  scene.add(path);
+
+  // Building
+  const building = new THREE.Group();
+  
+  const base = new THREE.Mesh(
+    new THREE.BoxGeometry(12, 14, 9),
+    new THREE.MeshStandardMaterial({ color: 0xd8c8a8, roughness: 0.6 })
+  );
+  base.position.set(0, 7, -12);
+  base.castShadow = true;
+  base.receiveShadow = true;
+  building.add(base);
+
+  const roof = new THREE.Mesh(
+    new THREE.ConeGeometry(8.5, 4, 4),
+    new THREE.MeshStandardMaterial({ color: 0x7a3a1a, roughness: 0.7 })
+  );
+  roof.position.set(0, 16, -12);
+  roof.rotation.y = Math.PI / 4;
+  roof.castShadow = true;
+  building.add(roof);
+
+  // Windows
+  const winMat = new THREE.MeshStandardMaterial({ 
+    color: 0x88ccff, emissive: 0x224466, emissiveIntensity: 0.4, roughness: 0.3
+  });
+  for (let row = 0; row < 3; row++) {
+    for (let col = -1; col <= 1; col++) {
+      const win = new THREE.Mesh(new THREE.BoxGeometry(1.4, 1.8, 0.2), winMat);
+      win.position.set(col * 3.5, 3.5 + row * 4, -7.4);
+      building.add(win);
+    }
+  }
+
+  // Door
+  const door = new THREE.Mesh(
+    new THREE.BoxGeometry(2.4, 4, 0.3),
+    new THREE.MeshStandardMaterial({ color: 0x4a2a1a })
+  );
+  door.position.set(0, 2, -7.3);
+  building.add(door);
+
+  scene.add(building);
+
+  // Flag pole
+  const pole = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.15, 0.2, 16, 8),
+    new THREE.MeshStandardMaterial({ color: 0xcccccc, metalness: 0.8, roughness: 0.2 })
+  );
+  pole.position.set(14, 8, -6);
+  pole.castShadow = true;
+  scene.add(pole);
+
+  const flag = new THREE.Mesh(
+    new THREE.PlaneGeometry(3, 1.8),
+    new THREE.MeshStandardMaterial({ color: 0xdd2222, side: THREE.DoubleSide })
+  );
+  flag.position.set(15.6, 15, -6);
+  scene.add(flag);
+
+  // Trees
+  function makeTree(x, z, s = 1) {
+    const g = new THREE.Group();
+    const trunk = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.3 * s, 0.5 * s, 3.5 * s, 8),
+      new THREE.MeshStandardMaterial({ color: 0x5a3a1a, roughness: 0.9 })
+    );
+    trunk.position.y = 1.75 * s;
+    trunk.castShadow = true;
+    g.add(trunk);
+
+    const leafMat = new THREE.MeshStandardMaterial({ color: 0x2a5a2a, roughness: 0.8 });
+    for (let i = 0; i < 3; i++) {
+      const leaves = new THREE.Mesh(
+        new THREE.ConeGeometry((1.6 - i * 0.3) * s, 1.8 * s, 8),
+        leafMat
+      );
+      leaves.position.y = (3.5 + i * 1.4) * s;
+      leaves.castShadow = true;
+      g.add(leaves);
+    }
+    g.position.set(x, 0, z);
+    return g;
+  }
+
+  scene.add(makeTree(-16, -6, 1.3));
+  scene.add(makeTree(-13, 8, 1.0));
+  scene.add(makeTree(16, 8, 1.1));
+  scene.add(makeTree(-20, 14, 1.2));
+  scene.add(makeTree(20, -16, 1.4));
+  scene.add(makeTree(-8, 20, 0.9));
+
+  // Bench
+  const bench = new THREE.Group();
+  const seat = new THREE.Mesh(
+    new THREE.BoxGeometry(3, 0.2, 1),
+    new THREE.MeshStandardMaterial({ color: 0x6a4a2a })
+  );
+  seat.position.y = 1;
+  seat.castShadow = true;
+  bench.add(seat);
+  const legMat = new THREE.MeshStandardMaterial({ color: 0x4a3a2a });
+  for (let i = -1; i <= 1; i += 2) {
+    const leg = new THREE.Mesh(new THREE.BoxGeometry(0.2, 1, 0.2), legMat);
+    leg.position.set(i * 1.2, 0.5, 0);
+    bench.add(leg);
+  }
+  bench.position.set(-10, 0, 12);
+  bench.rotation.y = 0.3;
+  scene.add(bench);
+}
+
+// ============================================================
+// SCENE 3: EXPLORE (slide 2)
+// ============================================================
+let exploreScene = null;
+
+function initExploreScene() {
+  if (exploreScene) return;
+  exploreScene = createScene('viewport-explore');
+  
+  // Add observer
+  const observer = createObserver();
+  observer.position.set(0, 0, 10);
+  exploreScene.scene.add(observer);
+  exploreScene.observer = observer;
+
+  animateScene(exploreScene, 'viewport-explore');
+}
+
+function createObserver() {
+  const g = new THREE.Group();
+  
+  const body = new THREE.Mesh(
+    new THREE.CapsuleGeometry(0.5, 1.3, 4, 8),
+    new THREE.MeshStandardMaterial({ color: 0x2a6fdb })
+  );
+  body.position.y = 1.2;
+  body.castShadow = true;
+  g.add(body);
+
+  const head = new THREE.Mesh(
+    new THREE.SphereGeometry(0.45, 16, 16),
+    new THREE.MeshStandardMaterial({ color: 0xffcc99 })
+  );
+  head.position.y = 2.35;
+  head.castShadow = true;
+  g.add(head);
+
+  const eyeMat = new THREE.MeshStandardMaterial({ color: 0x111111 });
+  const e1 = new THREE.Mesh(new THREE.SphereGeometry(0.08, 8, 8), eyeMat);
+  e1.position.set(-0.15, 2.45, 0.38);
+  g.add(e1);
+  const e2 = new THREE.Mesh(new THREE.SphereGeometry(0.08, 8, 8), eyeMat);
+  e2.position.set(0.15, 2.45, 0.38);
+  g.add(e2);
+
+  // Clinometer
+  const clin = new THREE.Mesh(
+    new THREE.BoxGeometry(0.25, 0.5, 0.1),
+    new THREE.MeshStandardMaterial({ color: 0xffcc33, emissive: 0x664400, emissiveIntensity: 0.3 })
+  );
+  clin.position.set(0.75, 2.1, 0.3);
+  clin.castShadow = true;
+  g.add(clin);
+
+  return g;
+}
+
+// ============================================================
+// SCENE 4: SETUP (slide 3)
+// ============================================================
+let setupScene = null;
+let setupState = { distance: 15, eyeHeight: 1.5, buildingTop: 14, angle: 30 };
+
+function initSetupScene() {
+  if (setupScene) return;
+  setupScene = createScene('viewport-setup');
+  
+  const observer = createObserver();
+  observer.position.set(0, 0, 8);
+  setupScene.scene.add(observer);
+  setupScene.observer = observer;
+  
+  updateSetupScene();
+  animateScene(setupScene, 'viewport-setup');
+  
+  // Drag observer
+  setupDragInteraction(setupScene, 'setupState');
+}
+
+function updateSetupScene() {
+  if (!setupScene) return;
+  const obs = setupScene.observer;
+  const eyeY = setupState.eyeHeight;
+  const topY = setupState.buildingTop;
+  const frontZ = -7;
+  
+  // observer z based on distance
+  obs.position.z = frontZ + setupState.distance;
+  
+  // Update HUD
+  document.getElementById('s3-dist').textContent = setupState.distance.toFixed(1) + ' m';
+  document.getElementById('s3-angle').textContent = setupState.angle.toFixed(1) + '°';
+  document.getElementById('s3-slider').value = setupState.angle;
+  document.getElementById('s3-slider-val').textContent = Math.round(setupState.angle) + '°';
+}
+
+// ============================================================
+// SCENE 5: TRIANGLE (slide 4)
+// ============================================================
+let triangleScene = null;
+let triState = { distance: 15, eyeHeight: 1.5, buildingTop: 14, angle: 30 };
+let triGroup = null;
+
+function initTriangleScene() {
+  if (triangleScene) return;
+  triangleScene = createScene('viewport-triangle');
+  
+  const observer = createObserver();
+  observer.position.set(0, 0, 8);
+  triangleScene.scene.add(observer);
+  triangleScene.observer = observer;
+  
+  triGroup = new THREE.Group();
+  triangleScene.scene.add(triGroup);
+  
+  updateTriangleScene();
+  animateScene(triangleScene, 'viewport-triangle');
+  
+  setupDragInteraction(triangleScene, 'triState');
+}
+
+function updateTriangleScene() {
+  if (!triangleScene) return;
+  const obs = triangleScene.observer;
+  const eyeY = triState.eyeHeight;
+  const topY = triState.buildingTop;
+  const frontZ = -7;
+  const obsZ = frontZ + triState.distance;
+  
+  obs.position.z = obsZ;
+  
+  // Clear old triangle
+  while (triGroup.children.length > 0) {
+    const c = triGroup.children[0];
+    if (c.geometry) c.geometry.dispose();
+    triGroup.remove(c);
+  }
+  
+  const A = new THREE.Vector3(0, eyeY, obsZ);      // observer eye
+  const B = new THREE.Vector3(0, eyeY, frontZ);    // base (right angle)
+  const C = new THREE.Vector3(0, topY, frontZ);    // top of building
+  
+  // Filled triangle
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array([
+    A.x, A.y, A.z, B.x, B.y, B.z, C.x, C.y, C.z
+  ]), 3));
+  geo.setIndex([0, 1, 2]);
+  geo.computeVertexNormals();
+  const mesh = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({
+    color: 0xffaa00, transparent: true, opacity: 0.18, side: THREE.DoubleSide, depthWrite: false
+  }));
+  triGroup.add(mesh);
+  
+  // Edges
+  const edges = [
+    [A, B, 0x42e6ff],  // adjacent
+    [B, C, 0xff8c42],  // opposite
+    [A, C, 0xb86bff]   // hypotenuse
+  ];
+  edges.forEach(([p1, p2, col]) => {
+    const g = new THREE.BufferGeometry().setFromPoints([p1, p2]);
+    const l = new THREE.Line(g, new THREE.LineBasicMaterial({ color: col, depthTest: false }));
+    l.renderOrder = 999;
+    triGroup.add(l);
+  });
+  
+  // Angle label
+  const angleDiv = document.createElement('div');
+  angleDiv.textContent = `θ = ${triState.angle.toFixed(1)}°`;
+  angleDiv.style.cssText = 'color:#ffcc33;font-weight:bold;font-size:13px;text-shadow:1px 1px 3px black;padding:3px 8px;background:rgba(10,14,39,0.85);border-radius:6px;border:1px solid #ffcc33;';
+  const angleLabel = new CSS2DObject(angleDiv);
+  angleLabel.position.copy(A).add(new THREE.Vector3(0.8, 0.3, 0));
+  triGroup.add(angleLabel);
+  
+  // Right angle marker
+  const rightDiv = document.createElement('div');
+  rightDiv.textContent = '90°';
+  rightDiv.style.cssText = 'color:#fff;font-weight:bold;font-size:11px;text-shadow:1px 1px 2px black;padding:2px 6px;background:rgba(10,14,39,0.85);border-radius:4px;';
+  const rightLabel = new CSS2DObject(rightDiv);
+  rightLabel.position.copy(B).add(new THREE.Vector3(0.5, 0.3, 0));
+  triGroup.add(rightLabel);
+  
+  // Measurements
+  const adj = A.distanceTo(B);
+  const opp = B.distanceTo(C);
+  const hyp = A.distanceTo(C);
+  
+  // Side labels
+  function sideLabel(text, color, pos) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    div.style.cssText = `color:${color};font-weight:bold;font-size:12px;text-shadow:1px 1px 3px black;padding:3px 8px;background:rgba(10,14,39,0.85);border-radius:6px;border:1px solid ${color};`;
+    const lbl = new CSS2DObject(div);
+    lbl.position.copy(pos);
+    return lbl;
+  }
+  
+  triGroup.add(sideLabel(`depan ${opp.toFixed(1)}m`, '#ff8c42', B.clone().add(C).multiplyScalar(0.5).add(new THREE.Vector3(1, 0, 0))));
+  triGroup.add(sideLabel(`samping ${adj.toFixed(1)}m`, '#42e6ff', A.clone().add(B).multiplyScalar(0.5).add(new THREE.Vector3(0, -0.5, 0))));
+  triGroup.add(sideLabel(`miring ${hyp.toFixed(1)}m`, '#b86bff', A.clone().add(C).multiplyScalar(0.5).add(new THREE.Vector3(1, 0.5, 0))));
+  
+  // Update HUD
+  document.getElementById('s4-angle').textContent = triState.angle.toFixed(1) + '°';
+  document.getElementById('s4-adj').textContent = adj.toFixed(1) + ' m';
+  document.getElementById('s4-opp').textContent = opp.toFixed(1) + ' m';
+  document.getElementById('s4-hyp').textContent = hyp.toFixed(1) + ' m';
+  document.getElementById('s4-slider').value = triState.angle;
+  document.getElementById('s4-slider-val').textContent = Math.round(triState.angle) + '°';
+}
+
+// ============================================================
+// SCENE 7: EXPERIMENT (slide 6)
+// ============================================================
+let experimentScene = null;
+let expState = { distance: 15, eyeHeight: 1.5, buildingTop: 14, angle: 30 };
+let expTriGroup = null;
+
+function initExperimentScene() {
+  if (experimentScene) return;
+  experimentScene = createScene('viewport-experiment');
+  
+  const observer = createObserver();
+  observer.position.set(0, 0, 8);
+  experimentScene.scene.add(observer);
+  experimentScene.observer = observer;
+  
+  expTriGroup = new THREE.Group();
+  experimentScene.scene.add(expTriGroup);
+  
+  updateExperimentScene();
+  animateScene(experimentScene, 'viewport-experiment');
+  
+  setupDragInteraction(experimentScene, 'expState');
+}
+
+function updateExperimentScene() {
+  if (!experimentScene) return;
+  const obs = experimentScene.observer;
+  const eyeY = expState.eyeHeight;
+  const topY = expState.buildingTop;
+  const frontZ = -7;
+  const obsZ = frontZ + expState.distance;
+  
+  obs.position.z = obsZ;
+  
+  // Clear triangle
+  while (expTriGroup.children.length > 0) {
+    const c = expTriGroup.children[0];
+    if (c.geometry) c.geometry.dispose();
+    expTriGroup.remove(c);
+  }
+  
+  const A = new THREE.Vector3(0, eyeY, obsZ);
+  const B = new THREE.Vector3(0, eyeY, frontZ);
+  const C = new THREE.Vector3(0, topY, frontZ);
+  
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array([
+    A.x, A.y, A.z, B.x, B.y, B.z, C.x, C.y, C.z
+  ]), 3));
+  geo.setIndex([0, 1, 2]);
+  geo.computeVertexNormals();
+  expTriGroup.add(new THREE.Mesh(geo, new THREE.MeshStandardMaterial({
+    color: 0xffaa00, transparent: true, opacity: 0.18, side: THREE.DoubleSide, depthWrite: false
+  })));
+  
+  const edges = [[A, B, 0x42e6ff], [B, C, 0xff8c42], [A, C, 0xb86bff]];
+  edges.forEach(([p1, p2, col]) => {
+    const g = new THREE.BufferGeometry().setFromPoints([p1, p2]);
+    expTriGroup.add(new THREE.Line(g, new THREE.LineBasicMaterial({ color: col, depthTest: false })));
+  });
+  
+  const adj = A.distanceTo(B);
+  const opp = B.distanceTo(C);
+  const hyp = A.distanceTo(C);
+  const sinV = opp / hyp;
+  const cosV = adj / hyp;
+  const tanV = opp / adj;
+  
+  // HUD
+  document.getElementById('s6-angle').textContent = expState.angle.toFixed(1) + '°';
+  document.getElementById('s6-opp').textContent = opp.toFixed(2) + ' m';
+  document.getElementById('s6-adj').textContent = adj.toFixed(2) + ' m';
+  document.getElementById('s6-hyp').textContent = hyp.toFixed(2) + ' m';
+  document.getElementById('s6-sin').textContent = sinV.toFixed(4);
+  document.getElementById('s6-cos').textContent = cosV.toFixed(4);
+  document.getElementById('s6-tan').textContent = tanV.toFixed(4);
+  document.getElementById('s6-slider').value = expState.angle;
+  document.getElementById('s6-slider-val').textContent = Math.round(expState.angle) + '°';
+}
+
+// ============================================================
+// DRAG INTERACTION (observer horizontal)
+// ============================================================
+function setupDragInteraction(sceneObj, stateName) {
+  const { renderer, camera, observer } = sceneObj;
+  const raycaster = new THREE.Raycaster();
+  const mouse = new THREE.Vector2();
+  let dragging = false;
+  
+  const stateMap = { setupState, triState, expState };
+  
+  renderer.domElement.addEventListener('mousedown', (e) => {
+    const rect = renderer.domElement.getBoundingClientRect();
+    mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+    mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+    raycaster.setFromCamera(mouse, camera);
+    if (raycaster.intersectObject(observer, true).length > 0) {
+      dragging = true;
+      sceneObj.controls.enabled = false;
+    }
+  });
+  
+  renderer.domElement.addEventListener('mousemove', (e) => {
+    if (!dragging) return;
+    const rect = renderer.domElement.getBoundingClientRect();
+    mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+    mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+    raycaster.setFromCamera(mouse, camera);
+    const plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
+    const target = new THREE.Vector3();
+    raycaster.ray.intersectPlane(plane, target);
+    if (target) {
+      const frontZ = -7;
+      const z = Math.max(-2, Math.min(22, target.z));
+      const newDist = z - frontZ;
+      if (newDist >= 5 && newDist <= 30) {
+        const st = stateMap[stateName];
+        st.distance = newDist;
+        // recalculate angle based on building height
+        const vert = st.buildingTop - st.eyeHeight;
+        st.angle = Math.atan2(vert, newDist) * 180 / Math.PI;
+        
+        if (stateName === 'setupState') updateSetupScene();
+        else if (stateName === 'triState') updateTriangleScene();
+        else if (stateName === 'expState') updateExperimentScene();
+      }
+    }
+  });
+  
+  renderer.domElement.addEventListener('mouseup', () => {
+    dragging = false;
+    sceneObj.controls.enabled = true;
+  });
+}
+
+// ============================================================
+// ANIMATION LOOP
+// ============================================================
+const activeScenes = new Map();
+
+function animateScene(sceneObj, containerId) {
+  activeScenes.set(containerId, sceneObj);
+}
+
+function animationLoop() {
+  requestAnimationFrame(animationLoop);
+  activeScenes.forEach((sceneObj) => {
+    // Only render if visible (parent slide is active)
+    const container = sceneObj.renderer.domElement.parentElement;
+    if (container && container.offsetParent !== null) {
+      sceneObj.controls.update();
+      sceneObj.renderer.render(sceneObj.scene, sceneObj.camera);
+      sceneObj.labelRenderer.render(sceneObj.scene, sceneObj.camera);
+    }
+  });
+}
+animationLoop();
+
+// ============================================================
+// RESIZE
+// ============================================================
+window.addEventListener('resize', () => {
+  activeScenes.forEach((sceneObj, containerId) => {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    const w = container.clientWidth;
+    const h = container.clientHeight;
+    sceneObj.camera.aspect = w / h;
+    sceneObj.camera.updateProjectionMatrix();
+    sceneObj.renderer.setSize(w, h);
+    sceneObj.labelRenderer.setSize(w, h);
+  });
+});
+
+// ============================================================
+// SLIDE CHANGE HOOK
+// ============================================================
+function onSlideChange(index) {
+  if (index === 2) setTimeout(initExploreScene, 100);
+  if (index === 3) setTimeout(initSetupScene, 100);
+  if (index === 4) setTimeout(initTriangleScene, 100);
+  if (index === 6) setTimeout(initExperimentScene, 100);
+  if (index === 9) initChallenge();
+}
+
+// ============================================================
+// SLIDER HANDLERS
+// ============================================================
+setTimeout(() => {
+  const s3 = document.getElementById('s3-slider');
+  if (s3) {
+    s3.addEventListener('input', (e) => {
+      const angle = parseFloat(e.target.value);
+      const vert = setupState.buildingTop - setupState.eyeHeight;
+      setupState.angle = angle;
+      setupState.distance = vert / Math.tan(angle * Math.PI / 180);
+      if (setupState.distance < 5) setupState.distance = 5;
+      if (setupState.distance > 30) setupState.distance = 30;
+      updateSetupScene();
+    });
+  }
+  
+  const s4 = document.getElementById('s4-slider');
+  if (s4) {
+    s4.addEventListener('input', (e) => {
+      const angle = parseFloat(e.target.value);
+      const vert = triState.buildingTop - triState.eyeHeight;
+      triState.angle = angle;
+      triState.distance = vert / Math.tan(angle * Math.PI / 180);
+      if (triState.distance < 5) triState.distance = 5;
+      if (triState.distance > 30) triState.distance = 30;
+      updateTriangleScene();
+    });
+  }
+  
+  const s6 = document.getElementById('s6-slider');
+  if (s6) {
+    s6.addEventListener('input', (e) => {
+      const angle = parseFloat(e.target.value);
+      const vert = expState.buildingTop - expState.eyeHeight;
+      expState.angle = angle;
+      expState.distance = vert / Math.tan(angle * Math.PI / 180);
+      if (expState.distance < 5) expState.distance = 5;
+      if (expState.distance > 30) expState.distance = 30;
+      updateExperimentScene();
+    });
+  }
+}, 500);
+
+// ============================================================
+// CHOICE HANDLERS (Slide 3)
+// ============================================================
+setTimeout(() => {
+  document.querySelectorAll('.option-card[data-choice]').forEach(card => {
+    card.addEventListener('click', () => {
+      document.querySelectorAll('.option-card[data-choice]').forEach(c => c.classList.remove('selected', 'correct', 'wrong'));
+      const choice = card.dataset.choice;
+      const fb = document.getElementById('explore-feedback');
+      const fbText = document.getElementById('explore-feedback-text');
+      fb.style.display = 'block';
+      
+      if (choice === '2') {
+        card.classList.add('correct');
+        fbText.innerHTML = '<span style="color:#42e6ff; font-weight:700;">✅ Tepat!</span> Menggunakan jarak dan sudut elevasi memungkinkan kita menghitung tinggi tanpa mengukur langsung. Mari kita coba!';
+        setTimeout(() => goToSlide(3), 1800);
+      } else if (choice === '1') {
+        card.classList.add('wrong');
+        fbText.innerHTML = '<span style="color:#ff6b6b; font-weight:700;">❌ Terlalu berbahaya & tidak praktis.</span> Kita tidak bisa memanjat gedung. Coba cara lain!';
+      } else {
+        card.classList.add('wrong');
+        fbText.innerHTML = '<span style="color:#ff6b6b; font-weight:700;">❌ Terlalu tidak akurat.</span> Perkiraan visual tidak cukup tepat. Coba cara yang lebih ilmiah!';
+      }
+    });
+  });
+}, 500);
+
+// ============================================================
+// EXPERIMENT BUTTONS
+// ============================================================
+window.setExperimentAngle = function(angle) {
+  const vert = expState.buildingTop - expState.eyeHeight;
+  expState.angle = angle;
+  expState.distance = vert / Math.tan(angle * Math.PI / 180);
+  if (expState.distance < 5) expState.distance = 5;
+  if (expState.distance > 30) expState.distance = 30;
+  updateExperimentScene();
+};
+
+window.saveObservation = function() {
+  const tbody = document.querySelector('#s6-table tbody');
+  const angle = expState.angle.toFixed(1);
+  const vert = expState.buildingTop - expState.eyeHeight;
+  const adj = expState.distance;
+  const opp = vert;
+  const hyp = Math.sqrt(adj * adj + opp * opp);
+  
+  const row = document.createElement('tr');
+  row.innerHTML = `
+    <td style="color:#ffcc33;">${angle}°</td>
+    <td style="color:#ff8c42;">${opp.toFixed(2)}</td>
+    <td style="color:#42e6ff;">${adj.toFixed(2)}</td>
+    <td style="color:#b86bff;">${hyp.toFixed(2)}</td>
+  `;
+  tbody.appendChild(row);
+  
+  // Flash feedback
+  const btn = event.target;
+  const orig = btn.textContent;
+  btn.textContent = '✅ TERSIMPAN!';
+  btn.style.background = 'linear-gradient(135deg, #42e6ff, #2a9fcc)';
+  setTimeout(() => {
+    btn.textContent = orig;
+    btn.style.background = '';
+  }, 1200);
+};
+
+// ============================================================
+// RATIO DISPLAY
+// ============================================================
+const ratioColors = {
+  sin: { side1: 'sisi depan', side2: 'sisi miring', c1: '#ff8c42', c2: '#b86bff' },
+  cos: { side1: 'sisi samping', side2: 'sisi miring', c1: '#42e6ff', c2: '#b86bff' },
+  tan: { side1: 'sisi depan', side2: 'sisi samping', c1: '#ff8c42', c2: '#42e6ff' }
+};
+
+window.showRatio = function(type) {
+  const r = ratioColors[type];
+  const sidesText = document.getElementById('ratio-sides-text');
+  const formula = document.getElementById('ratio-formula');
+  const value = document.getElementById('ratio-value');
+  const full = document.getElementById('full-formulas');
+  
+  sidesText.innerHTML = `Menyorot <span style="color:${r.c1}; font-weight:700;">${r.side1}</span> dan <span style="color:${r.c2}; font-weight:700;">${r.side2}</span>`;
+  
+  formula.style.display = 'block';
+  formula.innerHTML = `${type} θ = <span class="frac"><span class="top" style="color:${r.c1};">${r.side1}</span><span class="bottom" style="color:${r.c2};">${r.side2}</span></span>`;
+  
+  // Compute actual value
+  const vert = 14 - 1.5;
+  const ang = 30;
+  const adj = vert / Math.tan(ang * Math.PI / 180);
+  const opp = vert;
+  const hyp = Math.sqrt(adj*adj + opp*opp);
+  
+  let v;
+  if (type === 'sin') v = opp / hyp;
+  else if (type === 'cos') v = adj / hyp;
+  else v = opp / adj;
+  
+  value.textContent = `= ${v.toFixed(4)}`;
+  full.style.display = 'block';
+  
+  // Button states
+  ['sin', 'cos', 'tan'].forEach(t => {
+    const btn = document.getElementById('btn-ratio-' + t);
+    btn.className = t === type ? 'btn btn-accent' : 'btn btn-ghost';
+  });
+};
+
+// ============================================================
+// CHALLENGE
+// ============================================================
+let challengeData = { distance: 20, angle: 35, eyeHeight: 1.5, correctHeight: 0 };
+
+function initChallenge() {
+  challengeData.distance = 20;
+  challengeData.angle = 35;
+  challengeData.eyeHeight = 1.5;
+  
+  const vert = challengeData.distance * Math.tan(challengeData.angle * Math.PI / 180);
+  challengeData.correctHeight = vert + challengeData.eyeHeight;
+  
+  document.getElementById('challenge-distance').textContent = challengeData.distance.toFixed(1) + ' m';
+  document.getElementById('challenge-angle').textContent = challengeData.angle.toFixed(1) + '°';
+  document.getElementById('challenge-answer').value = '';
+  document.getElementById('challenge-feedback').innerHTML = '';
+}
+
+window.checkChallenge = function() {
+  const answer = parseFloat(document.getElementById('challenge-answer').value);
+  const fb = document.getElementById('challenge-feedback');
+  
+  if (isNaN(answer)) {
+    fb.innerHTML = '<span style="color:#ff8c42;">⚠️ Masukkan angka terlebih dahulu!</span>';
+    return;
+  }
+  
+  const diff = Math.abs(answer - challengeData.correctHeight);
+  if (diff < 0.5) {
+    fb.innerHTML = `<span style="color:#42e6ff; font-weight:700;">🎉 BENAR!</span><br>Tinggi gedung = <strong>${challengeData.correctHeight.toFixed(2)} m</strong><br><br><small style="color:#8a94b8;">tan 35° × 20 + 1.5 = ${challengeData.correctHeight.toFixed(2)} m</small>`;
+    setTimeout(() => goToSlide(10), 2500);
+  } else {
+    fb.innerHTML = `<span style="color:#ff6b6b;">❌ Belum tepat.</span><br>Jawabanmu: ${answer} m<br><br><small style="color:#8a94b8;">💡 Gunakan tan θ = depan/samping, lalu tambahkan tinggi mata.</small>`;
+  }
+};
+
+window.showChallengeHint = function() {
+  const fb = document.getElementById('challenge-feedback');
+  fb.innerHTML = `<span style="color:#ffcc33;">💡 PETUNJUK:</span><br>
+    1. tan θ = sisi depan / sisi samping<br>
+    2. sisi depan = tan θ × sisi samping<br>
+    3. Tinggi total = sisi depan + tinggi mata<br><br>
+    <small style="color:#8a94b8;">Coba: tan 35° × 20 = ? Lalu + 1.5</small>`;
+};
+
+// ============================================================
+// FINISH
+// ============================================================
+window.finishMission = function() {
+  goToSlide(11);
+};
+
+// ============================================================
+// INITIALIZE
+// ============================================================
+setTimeout(() => {
+  // Pre-initialize scenes when needed
+}, 1000);
+
+// Expose navigation to global
+window.goToSlide = goToSlide;
+window.nextSlide = nextSlide;
+window.prevSlide = prevSlide;
+window.setExperimentAngle = setExperimentAngle;
+window.saveObservation = saveObservation;
+window.showRatio = showRatio;
+window.checkChallenge = checkChallenge;
+window.showChallengeHint = showChallengeHint;
+window.finishMission = finishMission;
+</script>
+
+</body>
+</html>
